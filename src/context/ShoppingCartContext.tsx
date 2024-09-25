@@ -31,8 +31,26 @@ export const ShoppingCartProvider = ({
     return cartItems.find((item) => item.id === id)?.quantity || 0;
   }
 
+  function increaseCartQuantity(id: number) {
+    setCartItems((currItems) => {
+      if (currItems.find((item) => item.id === id) == null) {
+        return [...currItems, { id, quantity: 1 }];
+      } else {
+        return currItems.map((item) => {
+          if (item.id === id) {
+            return { ...item, quantity: item.quantity };
+          } else {
+            return item;
+          }
+        });
+      }
+    });
+  }
+
   return (
-    <ShoppingCartContext.Provider value={{ getItemQuantity }}>
+    <ShoppingCartContext.Provider
+      value={{ getItemQuantity, increaseCartQuantity }}
+    >
       {children}
     </ShoppingCartContext.Provider>
   );
