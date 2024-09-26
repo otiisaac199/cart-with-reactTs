@@ -1,4 +1,4 @@
-import { ShoppingCart } from "lucide-react";
+import ShoppingCart from "../components/ShoppingCart";
 import { createContext, ReactNode, useContext, useState } from "react";
 
 type ShoppingCartProviderProps = {
@@ -97,7 +97,7 @@ export const ShoppingCartProvider = ({
       }}
     >
       {children}
-      <ShoppingCart />
+      <ShoppingCart isOpen={isOpen} />
     </ShoppingCartContext.Provider>
   );
 };

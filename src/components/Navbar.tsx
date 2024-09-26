@@ -22,7 +22,7 @@ const Navbar = () => {
         </Nav>
         {cartQuantity > 0 && (
           <Button
-            onClick={openCart}
+            onClick={() => openCart()}
             style={{ position: "relative" }}
             variant="outline-primary"
             className="rounded-circle"
