@@ -1,3 +1,4 @@
+import { ShoppingCart } from "lucide-react";
 import { createContext, ReactNode, useContext, useState } from "react";
 
 type ShoppingCartProviderProps = {
@@ -10,10 +11,14 @@ type CartItem = {
 };
 
 type ShoppingCartContext = {
+  openCart: () => void;
+  closeCart: () => void;
   getItemQuantity: (id: number) => number;
   increaseCartQuantity: (id: number) => void;
   decreaseCartQuantity: (id: number) => void;
   removeFromCart: (id: number) => void;
+  cartQuantity: number;
+  cartItems: CartItem[];
 };
 
 const ShoppingCartContext = createContext({} as ShoppingCartContext);
@@ -25,11 +30,20 @@ export const useShoppingCart = () => {
 export const ShoppingCartProvider = ({
   children,
 }: ShoppingCartProviderProps) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  function getItemQuantity(id: number) {
+  const cartQuantity = cartItems.reduce(
+    (quantity, item) => item.quantity + quantity,
+    0
+  );
+
+  const openCart = () => setIsOpen(true);
+  const closeCart = () => setIsOpen(false);
+
+  const getItemQuantity = (id: number) => {
     return cartItems.find((item) => item.id === id)?.quantity || 0;
-  }
+  };
 
   function increaseCartQuantity(id: number) {
     setCartItems((currItems) => {
@@ -76,9 +90,14 @@ export const ShoppingCartProvider = ({
         increaseCartQuantity,
         decreaseCartQuantity,
         removeFromCart,
+        openCart,
+        closeCart,
+        cartItems,
+        cartQuantity,
       }}
     >
       {children}
+      <ShoppingCart />
     </ShoppingCartContext.Provider>
   );
 };
